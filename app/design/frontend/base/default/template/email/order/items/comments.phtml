@@ -24,20 +24,33 @@
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 ?>
-<?php
-$_order = $this->getOrder();
-$_items = $_order->getAllItems();
-$i = 0;
-$comments = $this->getComments($_items);
-if(count($comments) > 0){
-?>
-<table style="border:1px solid #BEBCB7;background:#f8f7f5;" cellpadding="0" cellspacing="0" width="99.9%" border="0">
-	<tr><td style="padding:3px 9px 6px 9px;background-color:#d9e5ee;line-height:1em;"><strong><?php echo Mage::helper('catalog')->__('Additional Information concerning the product(s) you have bought');?></strong></td></tr>
-<?php 
-foreach($comments as $comment){?>
-	<tr><td style="padding:3px 9px 6px 9px;background-color:<?php echo ($i%2)?'#EEEDED':'#F8F7F5';?>;"><strong><?php echo $comment['title'];?></strong></td></tr>
-	<tr><td style="padding:3px 9px 6px 9px;background-color:<?php echo ($i%2)?'#EEEDED':'#F8F7F5';?>;"><?php echo $comment['comment'];?></td></tr>
-<?php $i++;}?>
-</table>
-<?php 
-}
+<?php $_order = $this->getOrder(); ?>
+<?php if ($_order): ?>
+    <?php $_items = $_order->getAllItems(); ?>
+    <?php $i = 0; ?>
+    <?php $comments = $this->getComments($_items); ?>
+    <?php if (count($comments) > 0): ?>
+        <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <thead>
+                <tr>
+                    <th align="left" width="325" bgcolor="#EAEAEA"
+                        style="font-size:13px; padding:5px 9px 6px 9px; line-height:1em;"><?php echo Mage::helper('addinfotoemail')
+                            ->__('Additional Information concerning the product(s) you have bought'); ?>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td valign="top"
+                        style="font-size:12px; padding:7px 9px 9px 9px; border-left:1px solid #EAEAEA; border-bottom:1px solid #EAEAEA; border-right:1px solid #EAEAEA;">
+                        <?php foreach ($comments as $comment): ?>
+                            <strong><?php echo $comment['title']; ?></strong><br/>
+                            <?php echo $comment['comment']; ?><br/>
+                            <?php $i++; ?>
+                        <?php endforeach; ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <?php endif; ?>
+<?php endif; ?>
